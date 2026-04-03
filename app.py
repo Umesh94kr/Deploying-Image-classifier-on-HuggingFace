@@ -26,15 +26,21 @@ transform = transforms.Compose([
 
 uploaded_file = st.file_uploader("Upload an image")
 
-if uploaded_file:
-    image = Image.open(uploaded_file).convert("RGB")
-    st.image(image)
+if uploaded_file is not None:
+    try:
+        st.write("File received ✅")
 
-    img = transform(image).unsqueeze(0)
+        image = Image.open(uploaded_file).convert("RGB")
+        st.image(image)
 
-    with torch.no_grad():
-        outputs = model(img)
-        _, pred = torch.max(outputs, 1)
+        img = transform(image).unsqueeze(0)
 
-    label = classes[pred.item()]
-    st.write(f"Prediction: {label}")
+        with torch.no_grad():
+            outputs = model(img)
+            _, pred = torch.max(outputs, 1)
+
+        label = classes[pred.item()]
+        st.write(f"Prediction: {label}")
+
+    except Exception as e:
+        st.error(f"Error: {e}")
