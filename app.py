@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import torch
+from torchvision import transforms
 from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
 import urllib.request
 
