@@ -1,14 +1,18 @@
 import streamlit as st
 from PIL import Image
 import torch
-from torchvision import models, transforms
+from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
 import urllib.request
 
 st.title("Image Classifier")
 
-# Load model
-model = models.mobilenet_v2(pretrained=True)
-model.eval()
+@st.cache_resource
+def load_model():
+    model = mobilenet_v2(weights=MobileNet_V2_Weights.DEFAULT)
+    model.eval()
+    return model
+
+model = load_model()
 
 # Load labels
 url = "https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt"
